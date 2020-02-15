@@ -1,0 +1,232 @@
+﻿@{
+    ViewData["Title"] = "IDC";
+}
+<style>
+
+    #IDC {
+        color: #F28500
+    }
+
+    #IDCButton {
+        color: white;
+        background-color: #F28500;
+        border-radius: 7px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        padding-right: 18px;
+        padding-left: 18px;
+        font-size: 20px;
+    }
+</style>
+<div>
+    <h3 id="IDC">
+        I know you're here because you said "I don't care," but
+        before you are given a random resaurant, let's set some
+        preferences. Because, let's be honest, you do care a little bit.
+    </h3>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-3" style="text-align: left;">
+            <h3>Radius:</h3>
+            <h4 id="radiusHeader"></h4>
+            <input id="distanceRange" type="range" min="0.1" max="25" step="0.1" value="10" style="width:100%" oninput="updateRangeValue(this.value)" />
+        </div>
+        <div class="col-md-3" style="text-align: left;">
+            <h3>Price:</h3>
+            <h4 id="priceHeader"></h4>
+            <fieldset id="price"  style="font-size:18px;">
+                <input type="radio" name="price" value="1" onclick="updatePriceValue(this)" /> $<br />
+                <input type="radio" name="price" value="2" onclick="updatePriceValue(this)" /> $$<br />
+                <input type="radio" name="price" value="3" onclick="updatePriceValue(this)" /> $$$<br />
+                <input type="radio" name="price" value="4" onclick="updatePriceValue(this)" /> $$$$<br />
+            </fieldset>
+        </div>
+        <div class="col-md-3" style="text-align: left;">
+            <h3>Open Now?</h3>
+            <h4 id="openHeader"></h4>
+            <fieldset id="openNow"  style="font-size:18px;">
+                <input type="radio" name="openNow" value="1" onclick="updateOpenValue(this.value)" /> Yes<br />
+                <input type="radio" name="openNow" value="0" onclick="updateOpenValue(this.value)" /> I Don't Care<br />
+            </fieldset>
+        </div>
+        <div class="col-md-3" style="text-align: left;">
+            <h3>Rating:</h3>
+            <h4 id="ratingHeader"></h4>
+            <fieldset id="rating">
+                <input id="1star" type="radio" name="rating" value="1" onclick="updateRatingValue(this)" />
+                <label for="1star"><img src="https://imgur.com/cTYQbw6.png" /></label><br />
+                <input id="2star" type="radio" name="rating" value="2" onclick="updateRatingValue(this)" />
+                <label for="2star"><img src="https://i.imgur.com/XxIeY8N.png" /></label><br />
+                <input id="3star" type="radio" name="rating" value="3" onclick="updateRatingValue(this)" />
+                <label for="3star"><img src="https://i.imgur.com/wxieS2R.png" /></label><br />
+                <input id="4star" type="radio" name="rating" value="4" onclick="updateRatingValue(this)" />
+                <label for="4star"><img src="https://i.imgur.com/Thmd2gJ.png" /></label><br />
+                <input id="5star" type="radio" name="rating" value="5" onclick="updateRatingValue(this)" />
+                <label for="5star"><img src="https://imgur.com/3JN5YKQ.png" /></label><br />
+            </fieldset>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <h3>Categories</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3" style="text-align: left;">
+            <h4>Regions</h4>
+            <fieldset id="cats" style="font-size:18px;">
+                <input type="checkbox" name="cats" value="african" onclick="updateCatsArray(this.value)"/> African<br />
+                <input type="checkbox" name="cats" value="newamerican,tradamerican,chicken_wings,burgers" onclick="updateCatsArray(this.value)" /> American<br />
+                <input type="checkbox" name="cats" value="asianfusion,himalayan,hkcafe,indpak,indonesian,japanese,korean,raw_food,malaysian,mongolian,oriental,sushi,taiwanese,thai,vietnamese,chinese" onclick="updateCatsArray(this.value)" /> Asian<br />
+                <input type="checkbox" name="cats" value="austrian,bavarian,belgian,british,bulgarian,czech,danish,eastern_european,french,german,greek,irish,italian,israeli,jewish,mediterranean,modern_european,moroccan,swissfood,turkish"  onclick="updateCatsArray(this.value)"/> European<br />
+                <input type="checkbox" name="cats" value="hawaiian" onclick="updateCatsArray(this.value)" /> Hawaiian<br />
+                <input type="checkbox" name="cats" value="mexican" onclick="updateCatsArray(this.value)"/> Mexican<br />
+                <input type="checkbox" name="cats" value="mideastern,afghani,arabian,halal,kurdish,pakistani,persian,uzbek" onclick="updateCatsArray(this.value)" /> Middle East<br />
+                <input type="checkbox" name="cats" value="argentine,brazilian,caribbean,chilean,honduran,latin,peruvian,spanish" onclick="updateCatsArray(this.value)" /> South American<br />
+            </fieldset>
+        </div>
+        <div class="col-md-3" style="text-align: left;">
+            <h4>Establishments</h4>
+            <fieldset id="cats" style="font-size:18px;">
+                <input type="checkbox" name="cats" value="bistros" onclick="updateCatsArray(this.value)" /> Bistros<br />
+                <input type="checkbox" name="cats" value="buffets" onclick="updateCatsArray(this.value)" /> Buffets<br />
+                <input type="checkbox" name="cats" value="cafes" onclick="updateCatsArray(this.value)" /> Cafes<br />
+                <input type="checkbox" name="cats" value="cafeteria" onclick="updateCatsArray(this.value)" /> Cafeterias<br />
+                <input type="checkbox" name="cats" value="creperies" onclick="updateCatsArray(this.value)" /> Creperies<br />
+                <input type="checkbox" name="cats" value="diners" onclick="updateCatsArray(this.value)" /> Diners<br />
+                <input type="checkbox" name="cats" value="food_court" onclick="updateCatsArray(this.value)" /> Food Courts<br />
+                <input type="checkbox" name="cats" value="foodstands" onclick="updateCatsArray(this.value)" /> Food Stands<br />
+                <input type="checkbox" name="cats" value="steak" onclick="updateCatsArray(this.value)" /> Steakhouses<br />
+            </fieldset>
+        </div>
+        <div class="col-md-3" style="text-align: left;">
+            <h4>Types</h4>
+            <fieldset id="cats" style="font-size:18px;">
+                <input type="checkbox" name="cats" value="bbq" onclick="updateCatsArray(this.value)" /> Barbecue<br />
+                <input type="checkbox" name="cats" value="breakfast_brunch" onclick="updateCatsArray(this.value)" /> Breakfast/Brunch<br />
+                <input type="checkbox" name="cats" value="cajun" onclick="updateCatsArray(this.value)" /> Cajun/Creole<br />
+                <input type="checkbox" name="cats" value="comfortfood" onclick="updateCatsArray(this.value)" /> Comfort Food<br />
+                <input type="checkbox" name="cats" value="hotdogs" onclick="updateCatsArray(this.value)" /> Fast Food<br />
+                <input type="checkbox" name="cats" value="pizza" onclick="updateCatsArray(this.value)" /> Pizza<br />
+                <input type="checkbox" name="cats" value="pubfood" onclick="updateCatsArray(this.value)" /> Pub Food<br />
+                <input type="checkbox" name="cats" value="seafood" onclick="updateCatsArray(this.value)" /> Seafood<br />
+                <input type="checkbox" name="cats" value="soup" onclick="updateCatsArray(this.value)" /> Soup<br />
+            </fieldset>
+        </div>
+        <div class="col-md-3" style="text-align: left;">
+            <h4>Accommodations</h4>
+            <fieldset id="cats" style="font-size:18px;">
+                <input type="checkbox" name="cats" value="vegan" onclick="updateCatsArray(this.value)" /> Vegan<br />
+                <input type="checkbox" name="cats" value="vegetarian" onclick="updateCatsArray(this.value)" /> Vegetarian<br />
+            </fieldset>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-6" style="text-align: left;">
+            <button id="IDCButton" onclick='window.location = "@Url.Action("IDCApp", "Home")";'>Go Back</button>
+        </div>
+        <div class="col-md-6" style="text-align: right;">
+            <form action="IDC/Details" method="post" >
+                <input type="text" id="cityInput" name="city" style="display: none" value="@ViewBag.city"/>
+                <input type="text" id="latitudeInput" name="latitude" style="display: none" value="@ViewBag.latitude"/>
+                <input type="text" id="longitudeInput" name="longitude" style="display: none" value="@ViewBag.longitude"/>
+                <input type="text" id="radiusInput" name="radius" style="display: none" />
+                <input type="text" id="priceInput" name="price" style="display: none" />
+                <input type="text" id="ratingInput" name="rating" style="display: none" />
+                <input type="text" id="openNowInput" name="openNow" style="display: none" />
+                <input type="text" id="catsInput" name="cats" style="display: none" />
+                <input type="submit" id="IDCButton" value="Continue" />
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var catsArray = [];
+    function updateRangeValue(val) {
+        var rangeHeader = document.getElementById("radiusHeader");
+        document.getElementById("radiusInput").value = val;
+        if (val > 1 || val < 1) {
+            var str = new String("within " + val + " miles");
+            rangeHeader.outerHTML = "<h4 id=\"radiusHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        } else {
+            var str = new String("within " + val + " mile");
+            rangeHeader.outerHTML = "<h4 id=\"radiusHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+    }
+    function updatePriceValue(radio) {
+        var priceHeader = document.getElementById("priceHeader");
+        document.getElementById("priceInput").value = radio.value;
+        radio.checked = true;
+        if (radio.value === "4") {
+            var str = new String("Any price");
+            priceHeader.outerHTML = "<h4 id=\"priceHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+        else if (radio.value === "3") {
+            var str = new String("$60 and under");
+            priceHeader.outerHTML = "<h4 id=\"priceHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+        else if (radio.value === "2") {
+            var str = new String("$30 and under");
+            priceHeader.outerHTML = "<h4 id=\"priceHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+        else {
+            var str = new String("$10 and under");
+            priceHeader.outerHTML = "<h4 id=\"priceHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+    }
+    function updateOpenValue(val) {
+        var openHeader = document.getElementById("openHeader");
+        document.getElementById("openNowInput").value = val;
+        if (val === "1") {
+            var str = new String("Yes");
+            openHeader.outerHTML = "<h4 id=\"openHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        } else {
+            var str = new String("I Don't Care");
+            openHeader.outerHTML = "<h4 id=\"openHeader\">" + str.fontcolor("#F28500") + "</h4>";
+
+        }
+    }
+    function updateRatingValue(radio) {
+        var ratingHeader = document.getElementById("ratingHeader");
+        document.getElementById("ratingInput").value = radio.value;
+        radio.checked = true;
+        if (radio.value === "5") {
+            var str = new String("5 stars");
+            ratingHeader.outerHTML = "<h4 id=\"ratingHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+        else if (radio.value === "4") {
+            var str = new String("4 stars or more");
+            ratingHeader.outerHTML = "<h4 id=\"ratingHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+        else if (radio.value === "3") {
+            var str = new String("3 stars or more");
+            ratingHeader.outerHTML = "<h4 id=\"ratingHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+        else if (radio.value === "2") {
+            var str = new String("2 stars or more");
+            ratingHeader.outerHTML = "<h4 id=\"ratingHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+        else {
+            var str = new String("1 star or more");
+            ratingHeader.outerHTML = "<h4 id=\"ratingHeader\">" + str.fontcolor("#F28500") + "</h4>";
+        }
+    }
+
+    function updateCatsArray(val) {
+        if (catsArray.includes(val)) {
+            const index = catsArray.indexOf(val);
+            if (index > -1) {
+                catsArray.splice(index, 1);
+            }
+        } else {
+            catsArray.push(val);
+        }
+        document.getElementById("catsInput").value = catsArray.toString();
+    }
+</script>

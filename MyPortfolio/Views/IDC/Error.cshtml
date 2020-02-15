@@ -1,0 +1,33 @@
+﻿@model string
+
+<style>
+
+    #IDCButton {
+        color: white;
+        background-color: #F28500;
+        border-radius: 7px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        padding-right: 18px;
+        padding-left: 18px;
+        font-size: 20px;
+    }
+</style>
+<h1 style="text-align: center">
+    OOPS!
+</h1>
+<h2 style="color:red">
+    @ViewBag.message
+</h2>
+<br />
+<br />
+<div style="text-align: center">
+    @if (!String.IsNullOrWhiteSpace(ViewBag.city))
+    {
+        <button id="IDCButton" onclick='window.location = "@Url.Action("Index", "IDC", new { city = @ViewBag.city })";'>Click Here To Go Back To The Filters</button>
+    }
+    else
+    {
+        <button id="IDCButton" onclick='window.location = "@Url.Action("IDCApp", "Home")";'>Click Here To Go Back Search</button>
+    }
+</div>

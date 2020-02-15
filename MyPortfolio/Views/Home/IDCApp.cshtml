@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "IDCApp";
+}
+
+<style>
+    #IDC {
+        color: #F28500
+    }
+
+    #findNearMe {
+        bottom: 50px;
+        color: white;
+        background-color: #F28500;
+        border-radius: 7px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    #submitSearch {
+        color: white;
+        background-color: #F28500;
+        border-radius: 7px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        padding-right: 18px;
+        padding-left: 18px;
+        font-size: 20px;
+    }
+
+    li {
+        margin: 0 0 18px 0;
+        font-size: 16px;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Button used to open the contact form - fixed at the bottom of the page */
+
+    /* The popup form - hidden by default */
+    .form-popup {
+        display: none;
+
+    }
+
+    /* Add styles to the form container */
+    .form-container {
+        max-width: 150px;
+        padding: 10px;
+        background-color: white;
+    }
+
+        /* Set a style for the submit/login button */
+        .form-container .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+            background-color: red;
+        }
+
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover, .open-button:hover {
+            opacity: 1;
+        }
+</style>
+<h1 id="IDC">I Don't Care App</h1>
+<h3 id="IDC">Powered by Yelp®, designed for indecisive eaters</h3>
+<h4>
+    The I Don't Care App randomly generates a restaurant for you based on your preferences. To get started, search for a location below.
+</h4>
+<script src="https://maps.googleapis.com/maps/api/js?key=@(Constants.googleMapsApiKey)&libraries=places&callback=initMap" async defer></script>
+<div class="row">
+    <br />
+    <div class="col-md-4" style="margin-bottom: 3px">
+        <input id="autocomplete" type="text" placeholder="Search for a city" style="width:300px; outline-color: #F28500;" name="city"/>
+    </div>
+    <div class="col-md-8" style="text-align:center; margin-bottom: 10px; margin-top: 5px;">
+        <form action="IDCApp" method="post">
+            <input type="text" id="cityInput" name="city" placeholder="city" style="display: none" />
+            <input type="submit" id="submitSearch" style="display:none"/>
+        </form>
+    </div>
+    <br />
+        <div class="col-md-9">
+            <div id="map" style="height:500px; margin-bottom: 3px; margin-top: 10px;"></div>
+        </div>
+        <div class="col-md-3" style=" margin-top: 10px;">
+            <h4 id="IDC">Explore Yelp's Top 10 Foodie Cities In 2019</h4>
+                <ol>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "San Francisco, CA" })">San Francisco, CA</a></li>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "St. Louis, MO" })">St. Louis, MO</a></li>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "Honolulu, HI" })">Honolulu, HI</a></li>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "Plano, TX" })">Plano, TX</a></li>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "San Diego, CA" })">San Diego, CA</a></li>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "Las Vegas, NV" })">Las Vegas, NV</a></li>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "Richmond, VA" })">Richmond, VA</a></li>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "Pittsburgh, PA" })">Pittsburgh, PA</a></li>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "Balitimore, MD" })">Balitimore, MD</a></li>
+                    <li><a href="@Url.Action("Index", "IDC", new { city = "Austin, TX" })">Austin, TX</a></li>
+                </ol>            
+        </div>
+</div>
+    <script>
+        function openForm() {
+            getUsersLocation();
+            document.getElementById("myForm").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+    }
+    function getUsersLocation() {
+        if (navigator.geolocation)
+            navigator.geolocation.getCurrentPosition(showUsersPosition);
+    }
+    function showUsersPosition(position) {
+        document.getElementById("latInput").value = position.coords.latitude;
+        document.getElementById("longInput").value = position.coords.longitude;
+        console.log(document.getElementById("latInput").value);
+        console.log(document.getElementById("longInput").value);
+    }
+    function initMap() {
+        var searchButton = document.getElementById("submitSearch");
+        searchButton.style.display = "none";
+        var uluru = { lat: 40.820744, lng: -96.700470 };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: uluru
+        });
+
+        var input = document.getElementById('autocomplete');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+
+
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                window.alert("Autocomplete's returned place contains no geometry");
+                return;
+            }
+
+            var address = '';
+            if (place.address_components) {
+                address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                ].join(' ');
+            }
+
+            document.getElementById("cityInput").value = input.value;
+            searchButton.style.display = "inherit";
+            searchButton.style.fontSize = "17px";
+            searchButton.value = "Begin search near " + input.value;
+            console.log(input.value);
+            var marker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map
+            });
+
+            marker.setMap(map);
+            map.setCenter(place.geometry.location);
+            map.setZoom(10);
+            map.panTo(marker.position);
+        });
+    }
+</script>
+

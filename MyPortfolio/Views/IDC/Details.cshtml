@@ -1,0 +1,240 @@
+﻿@model YelpCompleteDetails
+<style>
+    #IDC {
+        color: #F28500
+    }
+
+    #IDCButton {
+        color: white;
+        background-color: #F28500;
+        border-radius: 7px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        padding-right: 18px;
+        padding-left: 18px;
+        font-size: 20px;
+    }
+
+
+        .mySlides {
+            text-align: center;
+            display: none;
+        }
+        img {
+            vertical-align: middle;
+            object-fit: cover;
+            width: auto;
+            height: auto;
+            max-height: 400px;
+            max-width: 350px;
+        }
+
+/* Slideshow container */
+.slideshow-container {
+    width: auto;
+    height: 400px;
+    position: relative;
+    margin: auto;
+}
+
+/* Next & previous buttons */
+    .prev, .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -22px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        background-color: #F28500;
+    }
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+    .prev:hover, .next:hover {
+        background-color: #F28500;
+    }
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+</style>
+<h1 id="IDC" style="text-align:center;">And your selection is:</h1>
+<div class="loader">
+    <div class="row">
+        <div class="col-md-12" style="text-align:center;">
+            <h2>@Model.YelpBusiness.Name</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="text-align:center;">
+            <h3 id="IDC">Is this your first time meeting @Model.YelpBusiness.Name?</h3>
+            <h3 id="IDC">Let's get to know them.</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="slideshow-container">
+                @foreach (var photo in Model.YelpBusiness.Photos)
+                {
+                    <div class="mySlides" style="text-align:center;">
+                        <img src="@photo">
+                    </div>
+                }
+
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+            </div>
+            <br>
+
+            <div style="text-align:center">
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <br />
+            <br />
+            @if (Model.YelpBusiness.IsClosed)
+            {
+                <h5 style="color:red">Closed Now</h5>
+            }
+            else
+            {
+                <h5 style="color:green">Open Now</h5>
+            }
+            <h5>@Model.YelpBusiness.Categories.FirstOrDefault().Title</h5>
+            <h5>Call now: <a href="tel: @Model.YelpBusiness.DisplayPhone">@Model.YelpBusiness.DisplayPhone</a></h5>
+            <h5>@Model.YelpBusiness.Price</h5>
+            <h5><a href="https://www.google.com/maps?saddr&daddr=@Model.YelpBusiness.Coordinates.Latitude,@Model.YelpBusiness.Coordinates.Longitude">@Model.YelpBusiness.Location.Address1 @Model.YelpBusiness.Location.City, @Model.YelpBusiness.Location.State</a></h5>
+            <h5>Hours Today: @Model.HoursToday</h5>
+            <a href="@Model.YelpBusiness.Url"><img id="yelpBurst" style="height:100px; width:100px;" src="https://i.imgur.com/chncIJM.png" /><h5 style="color:GrayText">Read More On Yelp</h5></a>
+        </div>
+    </div>
+    <br />
+    <div class="row" style="text-align:center;">
+        <div class="col-md-12">
+            <h3 id="IDC">Not your style?</h3>
+            <button id="IDCButton" onClick="window.location.reload();">Click here to generate another restaurant</button>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div id="map" style="height:500px; margin-bottom: 3px; margin-top: 10px;"></div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <h2 id="IDC" style="text-align: center">Suggested Reviews</h2>
+            <div style="text-align:center;">
+                <a href="@Model.YelpBusiness.Url"><img src="https://i.imgur.com/VWwglFk.png" style="width: 200px; height:auto;" /></a>
+                <img src="@Model.ReviewImage" />
+                <h5 style="text-align: center">Based on @Model.YelpReviews.Total reviews</h5>
+            </div>
+
+            @foreach (var review in Model.YelpReviews.Reviews)
+            {
+                <div style="margin-left: 8px; margin-right:8px;">
+                    <img id="review" style="height:50px; width:50px; border-radius:50%" src="@review.User.ImageUrl" />
+                    <br />
+                    <h4 id="IDC"><a href="@review.User.ProfileUrl" id="IDC">@review.User.Name</a></h4>
+                    <h5>@review.TimeCreated.Date.ToString().Replace("00:00:00", "")</h5>
+                    <img src="@review.Id" />
+                    <br />
+                    <h5>@review.Text <a href="@review.Url" style="color:GrayText"> read more</a></h5>
+                    <br />
+                    <br />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+    <script>var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }</script>
+
+    <script>
+        function initMap() {
+            var position = { lat: @Model.YelpBusiness.Coordinates.Latitude, lng: @Model.YelpBusiness.Coordinates.Longitude };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: position,
+                zoom: 17
+            });
+            var marker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: '@Model.YelpBusiness.Name'
+            });
+            }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=@(Constants.googleMapsApiKey)&callback=initMap" async defer></script>
